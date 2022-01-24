@@ -1,0 +1,9 @@
+train_multiple/TrainMapper.class
+WC/WordCountReducer.class
+Train_Job/TrainMapper.class
+Train_Job/TrainFinder.class
+Train_Job/TrainReducer.class
+WC/WordCountJob.class
+WC/WordCountMapper.class
+train_multiple/TrainFinder.class
+train_multiple/TrainReducer.class

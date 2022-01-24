@@ -1,0 +1,126 @@
+
+
+BDT EXAM 
+Q1> ANSWER
+
+
+
+
+_________________________________________________________________________________
+
+/usr/bin/python3.8 /home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/Core/Q1.py
+22/01/24 10:12:58 WARN Utils: Your hostname, ubuntu resolves to a loopback address: 127.0.1.1; using 192.168.0.106 instead (on interface wlp2s0)
+22/01/24 10:12:58 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.spark.unsafe.Platform (file:/home/hitman/.local/lib/python3.8/site-packages/pyspark/jars/spark-unsafe_2.12-3.2.0.jar) to constructor java.nio.DirectByteBuffer(long,int)
+WARNING: Please consider reporting this to the maintainers of org.apache.spark.unsafe.Platform
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+22/01/24 10:13:00 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+/home/hitman/.local/lib/python3.8/site-packages/pyspark/sql/context.py:77: FutureWarning: Deprecated in 3.0.0. Use SparkSession.builder.getOrCreate() instead.
+  warnings.warn(
+PySpark_Data format Operations
+Load Data into dataframe
+=================================
++----------+----------+-----------+-------------+--------------------+------------+---------+--------------+
+|      Date|      Code|CommodityId|CommodityName|        DistrictName|DistrictCode|    Stock|CommodityStock|
++----------+----------+-----------+-------------+--------------------+------------+---------+--------------+
+|2021-01-01|Tamil Nadu|          2|     Rice-Raw|          COIMBATORE|        SE12|717747.92|    1174193.92|
+|2021-01-01|Tamil Nadu|          2|     Rice-Raw|             CHENNAI|        SE14| 96759.01|    1174193.92|
+|2021-01-01|Tamil Nadu|          2|     Rice-Raw|        THOOTHUKKUDI|        SE15|174754.11|    1174193.92|
+|2021-01-01|Tamil Nadu|          2|     Rice-Raw|           THANJAVUR|        SE16| 75341.05|    1174193.92|
+|2021-01-01|Tamil Nadu|          2|     Rice-Raw|CUDDALORE(PONDICH...|        SE17| 33481.75|    1174193.92|
+|2021-01-01|Tamil Nadu|          2|     Rice-Raw|             VELLORE|        SE18| 76110.07|    1174193.92|
+|2021-01-02|Tamil Nadu|          2|     Rice-Raw|          COIMBATORE|        SE12|717747.92|    1168643.28|
+|2021-01-02|Tamil Nadu|          2|     Rice-Raw|             CHENNAI|        SE14| 96759.01|    1168643.28|
+|2021-01-02|Tamil Nadu|          2|     Rice-Raw|        THOOTHUKKUDI|        SE15|171574.15|    1168643.28|
+|2021-01-02|Tamil Nadu|          2|     Rice-Raw|           THANJAVUR|        SE16| 75341.05|    1168643.28|
+|2021-01-02|Tamil Nadu|          2|     Rice-Raw|CUDDALORE(PONDICH...|        SE17| 33481.75|    1168643.28|
+|2021-01-02|Tamil Nadu|          2|     Rice-Raw|             VELLORE|        SE18|  73739.4|    1168643.28|
+|2021-01-03|Tamil Nadu|          2|     Rice-Raw|          COIMBATORE|        SE12|717747.92|    1168643.28|
+|2021-01-03|Tamil Nadu|          2|     Rice-Raw|             CHENNAI|        SE14| 96759.01|    1168643.28|
+|2021-01-03|Tamil Nadu|          2|     Rice-Raw|        THOOTHUKKUDI|        SE15|171574.15|    1168643.28|
+|2021-01-03|Tamil Nadu|          2|     Rice-Raw|           THANJAVUR|        SE16| 75341.05|    1168643.28|
+|2021-01-03|Tamil Nadu|          2|     Rice-Raw|CUDDALORE(PONDICH...|        SE17| 33481.75|    1168643.28|
+|2021-01-03|Tamil Nadu|          2|     Rice-Raw|             VELLORE|        SE18|  73739.4|    1168643.28|
+|2021-01-04|Tamil Nadu|          2|     Rice-Raw|          COIMBATORE|        SE12|707372.13|    1129704.35|
+|2021-01-04|Tamil Nadu|          2|     Rice-Raw|             CHENNAI|        SE14| 96759.01|    1129704.35|
++----------+----------+-----------+-------------+--------------------+------------+---------+--------------+
+only showing top 20 rows
+
+root
+ |-- Date: string (nullable = true)
+ |-- Code: string (nullable = true)
+ |-- CommodityId: string (nullable = true)
+ |-- CommodityName: string (nullable = true)
+ |-- DistrictName: string (nullable = true)
+ |-- DistrictCode: string (nullable = true)
+ |-- Stock: string (nullable = true)
+ |-- CommodityStock: string (nullable = true)
+
+=================================
+Q1-1 Find all the districts participating in the data collection
+=================================
++--------------------+
+|        DistrictName|
++--------------------+
+|CUDDALORE(PONDICH...|
+|           THANJAVUR|
+|             CHENNAI|
+|             VELLORE|
+|          COIMBATORE|
+|        THOOTHUKKUDI|
++--------------------+
+
+=================================
+Q1-2 Find the district with max Stock and CommodityStock
+=================================
++--------------------+--------------------+
+|        DistrictName|          sum(Stock)|
++--------------------+--------------------+
+|          COIMBATORE| 9.525525759300026E8|
+|             VELLORE| 1.691111626799993E8|
+|        THOOTHUKKUDI|1.3825713646999973E8|
+|             CHENNAI| 9.897219222000004E7|
+|           THANJAVUR| 9.120930285999991E7|
+|CUDDALORE(PONDICH...|3.5143846599999934E7|
++--------------------+--------------------+
+
+=================================
+Q1-3 Find the district with max Total Stock, where Total Stock = Stock + CommodityStock
+=================================
++------------+-------------------+
+|DistrictName|   sum(Total_Stock)|
++------------+-------------------+
+|  COIMBATORE|2.437798792250002E9|
++------------+-------------------+
+only showing top 1 row
+
+=================================
+Q1-4 Find the average of all the Stock for “Chennai”
+=================================
++------------+-----------------+
+|DistrictName|       avg(Stock)|
++------------+-----------------+
+|     CHENNAI|82134.59935269713|
++------------+-----------------+
+
+=================================
+Q1-5. Find the district with min of avg of commodity stock
+=================================
++------------+-------------------+
+|DistrictName|avg(CommodityStock)|
++------------+-------------------+
+|  COIMBATORE|  1228491.494061208|
++------------+-------------------+
+only showing top 1 row
+
+
+Process finished with exit code 0
+
+
+
+

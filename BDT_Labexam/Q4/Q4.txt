@@ -1,0 +1,49 @@
+
+BDT EXAM 
+Q4> ANSWER
+
+
+---------------------------------------------------------------------------------
+1. Create a directory in HDFS
+$HADOOP_HOME
+start-dfs.sh
+hdfs dfs -mkdir /Q
+
+
+2. Ingest a text file into HDFS
+hdfs dfs -put /home/hitman/tmp/README.txt  /Q/.
+
+
+3. List the contents of the directory created in step #1
+hdfs dfs -ls /
+
+
+4. Print the contents of the file ingested in step #2
+ hdfs dfs -cat /Q/README.txt
+
+
+5. Change the replication factor of file ingested in step #2
+hdfs dfs -setrep -R 2 /Q/README.txt
+hdfs dfs -setrep -w 1 /Q/README.txt
+
+
+6. Display the changed replication factor
+#hdfs fsck /Q/README.txt
+hdfs dfs -stat %r /Q/README.txt
+
+
+7. Change the permissions of file ingested in step #2 to 644
+hdfs dfs -chmod 644 /Q/README.txt
+
+
+8. Change the ownership of a file ingested in step #2
+hdfs dfs -chown user:hdfs /Q/README.txt
+
+
+9. Set the file created ingested in step 2, to size 0 (zero)
+hdfs dfs -truncate 0 /Q/README.txt
+
+
+10. Delete the directory created in step 1
+hdfs dfs -rm -r -f -skipTrash /Q/README.txt
+

@@ -1,0 +1,29 @@
+
+BDT EXAM 
+Q3> ANSWER
+
+
+---------------------------------------------------------------------------------
+1. Create a table 'mytable' in Hbase with 2 column families, “mycolfamily1”, “mycolfamily2”
+
+create 'mytable', {NAME => 'mycolfamily1'}, {NAME => 'mycolfamily2'}
+
+
+2. Insert data into two columns (named col1, col2) in first column family (“mycolfamily1”)
+
+put 'mytable', 'MyRow1', 'mycolfamily1:col1', '1'
+put 'mytable', 'MyRow2', 'mycolfamily1:col2', '2'
+
+
+3. Retrieve the entire inserted data and display it on top of the screen.
+
+scan 'mytable'
+
+
+4. Retrieve only the data from col1 of “mycolfamily1”
+get 'mytable', 'MyRow1' , 'mycolfamily1:col1'
+
+5. Drop the hbase table
+disable 'mytable'
+is_disabled 'mytable'
+drop 'mytable'

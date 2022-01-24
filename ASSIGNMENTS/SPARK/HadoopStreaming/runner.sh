@@ -1,0 +1,1 @@
+hadoop jar ./share/hadoop/tools/lib/hadoop-streaming-3.3.1.jar -input /LICENSE.txt -output /stream_out_2 -mapper mapper.py -reducer reducer.py -file mapper.py -file reducer.py

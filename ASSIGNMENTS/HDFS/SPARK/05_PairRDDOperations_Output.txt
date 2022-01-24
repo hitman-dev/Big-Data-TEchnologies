@@ -1,0 +1,95 @@
+
+
+05_PairRDDOperations.py
+---------------------------------------------------------------------------------
+OUTPUT:-
+---------------------------------------------------------------------------------
+
+/home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/venv/bin/python /home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/Spark_Session/05_PairRDDOperations.py
+22/01/17 12:23:40 WARN Utils: Your hostname, ubuntu resolves to a loopback address: 127.0.1.1; using 192.168.0.106 instead (on interface wlp2s0)
+22/01/17 12:23:40 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.spark.unsafe.Platform (file:/home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/venv/lib/python3.8/site-packages/pyspark/jars/spark-unsafe_2.12-3.2.0.jar) to constructor java.nio.DirectByteBuffer(long,int)
+WARNING: Please consider reporting this to the maintainers of org.apache.spark.unsafe.Platform
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+22/01/17 12:23:41 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+MultipleRDDOperations
+
+=================================
+Declare an array and parallelize it
+=================================
+=================================
+Count by Value
+=================================
+Print : defaultdict(<class 'int'>, {1: 2, 2: 3, 3: 5, 4: 1, 5: 8, 6: 1})
+=================================
+=================================
+Group By Key
+=================================
+(1, <pyspark.resultiterable.ResultIterable object at 0x7f274001d8e0>)
+(2, <pyspark.resultiterable.ResultIterable object at 0x7f274001ddf0>)
+(3, <pyspark.resultiterable.ResultIterable object at 0x7f274001d8e0>)
+(4, <pyspark.resultiterable.ResultIterable object at 0x7f274001ddf0>)
+(5, <pyspark.resultiterable.ResultIterable object at 0x7f274001d8e0>)
+(6, <pyspark.resultiterable.ResultIterable object at 0x7f274001ddf0>)
+=================================
+=================================
+Reduce By Key
+=================================
+(1, 2)
+(2, 3)
+(3, 5)
+(4, 1)
+(5, 8)
+(6, 1)
+=================================
+=================================
+Aggregate By Key
+=================================
+(1, 2)
+(2, 3)
+(3, 5)
+(4, 1)
+(5, 8)
+(6, 1)
+=================================
+=================================
+Sort By Key
+=================================
+(1, 1)
+(1, 1)
+(2, 1)
+(2, 1)
+(2, 1)
+(3, 1)
+(3, 1)
+(3, 1)
+(3, 1)
+(3, 1)
+(4, 1)
+(5, 1)
+(5, 1)
+(5, 1)
+(5, 1)
+(5, 1)
+(5, 1)
+(5, 1)
+(5, 1)
+(6, 1)
+=================================
+=================================
+Count By Key
+=================================
+defaultdict(<class 'int'>, {1: 2, 2: 3, 3: 5, 4: 1, 5: 8, 6: 1})
+=================================
+=================================
+CoGroup Operation
+=================================
+PythonRDD[27] at RDD at PythonRDD.scala:53
+=================================
+
+Process finished with exit code 0

@@ -1,0 +1,67 @@
+
+
+23_StreamProcessingWithData.py
+---------------------------------------------------------------------------------
+OUTPUT:-
+---------------------------------------------------------------------------------
+
+/home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/venv/bin/python /home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/streaming/23_StreamProcessingWithData.py
+22/01/17 16:33:17 WARN Utils: Your hostname, ubuntu resolves to a loopback address: 127.0.1.1; using 192.168.0.106 instead (on interface wlp2s0)
+22/01/17 16:33:17 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.spark.unsafe.Platform (file:/home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/venv/lib/python3.8/site-packages/pyspark/jars/spark-unsafe_2.12-3.2.0.jar) to constructor java.nio.DirectByteBuffer(long,int)
+WARNING: Please consider reporting this to the maintainers of org.apache.spark.unsafe.Platform
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+22/01/17 16:33:18 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+22/01/17 16:33:19 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
+22/01/17 16:33:19 WARN Utils: Service 'SparkUI' could not bind on port 4041. Attempting port 4042.
+/home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/venv/lib/python3.8/site-packages/pyspark/sql/context.py:77: FutureWarning: Deprecated in 3.0.0. Use SparkSession.builder.getOrCreate() instead.
+  warnings.warn(
+=================================
+Read train data over a file location
+=================================
+root
+ |-- TrainNo: string (nullable = true)
+ |-- TrainIn: integer (nullable = true)
+ |-- TrainOut: integer (nullable = true)
+ |-- Speed: integer (nullable = true)
+ |-- DirIn: string (nullable = true)
+ |-- DirOut: string (nullable = true)
+ |-- Duration: string (nullable = true)
+
+22/01/17 16:33:23 WARN ResolveWriteToStream: Temporary checkpoint location created which is deleted normally when the query didn't fail: /tmp/temporary-6ff0fcf3-a7e7-4411-ac56-b2b9da2d3e55. If it's required to delete it under any circumstances, please set spark.sql.streaming.forceDeleteTempCheckpointLocation to true. Important to know deleting temp checkpoint folder is best effort.
+22/01/17 16:33:23 WARN ResolveWriteToStream: spark.sql.adaptive.enabled is not supported in streaming DataFrames/Datasets and will be disabled.
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++-------+-------+--------+-----+-----+------+--------+
+|TrainNo|TrainIn|TrainOut|Speed|DirIn|DirOut|Duration|
++-------+-------+--------+-----+-----+------+--------+
+|   1000|   1000|    1010|   90|    E|     E|   00:10|
+|   1001|   1010|    1030|   40|    W|     S|   00:20|
+|   1002|   1015|    1030|   40|    N|     N|   00:15|
+|   1003|   1020|    1050|   60|    S|     E|   00:30|
+|   1002|   1015|    1100|   40|    E|     W|   00:45|
+|   0110|   1000|    1001|   70|    W|     N|   00:01|
+|   2000|   1000|    1010|   60|    E|     E|   00:10|
+|   2001|   1010|    1030|   40|    W|     S|   00:20|
+|   2002|   1015|    1030|   40|    N|     N|   00:15|
+|   2003|   1020|    1050|   60|    S|     E|   00:30|
+|   2002|   1015|    1100|   40|    E|     W|   00:45|
+|   2110|   1000|    1001|   70|    W|     N|   00:01|
+|   3000|   1000|    1010|   60|    E|     E|   00:10|
+|   3001|   1010|    1030|   40|    W|     S|   00:20|
+|   3002|   1015|    1030|   40|    N|     N|   00:15|
+|   3003|   1020|    1050|   60|    S|     E|   00:30|
+|   3002|   1015|    1100|   40|    E|     W|   00:45|
+|   3110|   1000|    1001|   70|    W|     N|   00:01|
+|   4000|   1000|    1010|   60|    E|     E|   00:10|
+|   4001|   1010|    1030|   40|    W|     S|   00:20|
++-------+-------+--------+-----+-----+------+--------+
+only showing top 20 rows
+
+

@@ -1,0 +1,81 @@
+
+
+09_SparkDBConnectivity
+---------------------------------------------------------------------------------
+OUTPUT:-
+---------------------------------------------------------------------------------
+
+/home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/venv/bin/python /home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/SQL_Code/09_SparkDBConnectivity.py
+22/01/17 11:55:50 WARN Utils: Your hostname, ubuntu resolves to a loopback address: 127.0.1.1; using 192.168.0.106 instead (on interface wlp2s0)
+22/01/17 11:55:50 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.spark.unsafe.Platform (file:/home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/venv/lib/python3.8/site-packages/pyspark/jars/spark-unsafe_2.12-3.2.0.jar) to constructor java.nio.DirectByteBuffer(long,int)
+WARNING: Please consider reporting this to the maintainers of org.apache.spark.unsafe.Platform
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+22/01/17 11:55:50 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+/home/hitman/DBDA_HOME/DBDA_CODE/SPARK/PYTHON/venv/lib/python3.8/site-packages/pyspark/sql/context.py:77: FutureWarning: Deprecated in 3.0.0. Use SparkSession.builder.getOrCreate() instead.
+  warnings.warn(
+PySpark_Dataframe DB Operations
+root
+ |-- country_id: string (nullable = true)
+ |-- country_name: string (nullable = true)
+ |-- region_id: integer (nullable = true)
+
++----------+------------+---------+
+|country_id|country_name|region_id|
++----------+------------+---------+
+|        AR|   Argentina|        2|
+|        AU|   Australia|        3|
+|        BE|     Belgium|        1|
+|        BR|      Brazil|        2|
+|        CA|      Canada|        2|
+|        CH| Switzerland|        1|
+|        CN|       China|        3|
+|        DE|     Germany|        1|
+|        DK|     Denmark|        1|
+|        EG|       Egypt|        4|
+|        FR|      France|        1|
+|        HK|    HongKong|        3|
+|        IL|      Israel|        4|
+|        IN|       India|        3|
+|        IT|       Italy|        1|
+|        JP|       Japan|        3|
+|        KW|      Kuwait|        4|
+|        MX|      Mexico|        2|
+|        NG|     Nigeria|        4|
+|        NL| Netherlands|        1|
++----------+------------+---------+
+only showing top 20 rows
+
++----------+------------+---------+
+|country_id|country_name|region_id|
++----------+------------+---------+
+|        AR|   Argentina|        2|
+|        AU|   Australia|        3|
+|        BE|     Belgium|        1|
+|        BR|      Brazil|        2|
+|        CA|      Canada|        2|
+|        CH| Switzerland|        1|
+|        CN|       China|        3|
+|        DE|     Germany|        1|
+|        DK|     Denmark|        1|
+|        EG|       Egypt|        4|
+|        FR|      France|        1|
+|        HK|    HongKong|        3|
+|        IL|      Israel|        4|
+|        IN|       India|        3|
+|        IT|       Italy|        1|
+|        JP|       Japan|        3|
+|        KW|      Kuwait|        4|
+|        MX|      Mexico|        2|
+|        NG|     Nigeria|        4|
+|        NL| Netherlands|        1|
++----------+------------+---------+
+only showing top 20 rows
+
+
+Process finished with exit code 0

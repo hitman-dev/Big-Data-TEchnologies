@@ -1,0 +1,1137 @@
+
+
+# Check the value of execution engine
+set hive.execution.engine;
+---------------------------------------------------------------------------------------
+show databases;
+
+#Output:-
+hive> show databases;
+OK
+default
+test
+Time taken: 6.811 seconds, Fetched: 2 row(s)
+hive> 
+
+--------------------------------------------------------------------------------------
+drop database cdac cascade;
+
+#Output:-
+hive> drop database cdac cascade;
+FAILED: SemanticException [Error 10072]: Database does not exist: cdac
+hive> 
+
+
+--------------------------------------------------------------------------------------
+create database cdac;
+
+#Output:-
+hive> create database cdac;
+OK
+Time taken: 0.473 seconds
+hive> show databases;
+OK
+cdac
+default
+test
+Time taken: 0.046 seconds, Fetched: 3 row(s)
+hive> 
+
+
+--------------------------------------------------------------------------------------
+use cdac;
+
+#Output:-
+hive> use cdac;
+OK
+Time taken: 0.05 seconds
+hive> 
+
+
+
+--------------------------------------------------------------------------------------
+show tables;
+
+#Output:-
+hive> show tables;
+OK
+Time taken: 0.143 seconds
+hive> 
+
+
+--------------------------------------------------------------------------------------
+# Create a simple managed table and check it using show create table 
+
+create table simple_managed_table ( col1 integer, col2 string );
+
+#Output:-
+hive> create table simple_managed_table ( col1 integer, col2 string );
+OK
+Time taken: 1.887 seconds
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+show create table simple_managed_table;
+
+#Output:-
+hive> show create table simple_managed_table;
+OK
+CREATE TABLE `simple_managed_table`(
+  `col1` int, 
+  `col2` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://127.0.0.1:9000/user/hive/warehouse/cdac.db/simple_managed_table'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1641357266')
+Time taken: 0.765 seconds, Fetched: 13 row(s)
+hive> 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dfs -ls /user/hive/warehouse ;
+
+#Output:-
+hive> dfs -ls /user/hive/warehouse ;
+Found 2 items
+drwxrwxr-x   - hitman supergroup          0 2022-01-05 10:04 /user/hive/warehouse/cdac.db
+drwxrwxr-x   - hitman supergroup          0 2021-12-28 23:21 /user/hive/warehouse/test.db
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+insert into simple_managed_table values (1, 'abc');
+
+#Output:-
+hive> insert into simple_managed_table values (1, 'abc');
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hitman_20220105101030_9578f12b-2845-4a34-a310-6a81c299680b
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1641356048247_0001, Tracking URL = http://ubuntu:8088/proxy/application_1641356048247_0001/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641356048247_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2022-01-05 10:10:58,059 Stage-1 map = 0%,  reduce = 0%
+2022-01-05 10:11:06,611 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.16 sec
+MapReduce Total cumulative CPU time: 3 seconds 160 msec
+Ended Job = job_1641356048247_0001
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/cdac.db/simple_managed_table/.hive-staging_hive_2022-01-05_10-10-30_699_6488830085955125179-1/-ext-10000
+Loading data to table cdac.simple_managed_table
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 3.16 sec   HDFS Read: 4287 HDFS Write: 87 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 160 msec
+OK
+Time taken: 38.277 seconds
+hive> 
+
+--------------------------------------------------------------------------------------
+# Multi value insert using a single SQL 
+
+insert into simple_managed_table values (2, 'pqr'), (3, 'xyz'), (4, 'lmo');
+
+#Output:-
+hive> insert into simple_managed_table values (2, 'pqr'), (3, 'xyz'), (4, 'lmo');
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hitman_20220105101225_f5e10306-5ff3-48d1-a2af-e439830561f1
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1641356048247_0002, Tracking URL = http://ubuntu:8088/proxy/application_1641356048247_0002/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641356048247_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2022-01-05 10:12:38,981 Stage-1 map = 0%,  reduce = 0%
+2022-01-05 10:12:46,542 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.17 sec
+MapReduce Total cumulative CPU time: 3 seconds 170 msec
+Ended Job = job_1641356048247_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/cdac.db/simple_managed_table/.hive-staging_hive_2022-01-05_10-12-25_667_1560466036897440054-1/-ext-10000
+Loading data to table cdac.simple_managed_table
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 3.17 sec   HDFS Read: 4311 HDFS Write: 99 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 170 msec
+OK
+Time taken: 23.675 seconds
+hive> 
+
+
+--------------------------------------------------------------------------------------
+# Create a simple external table and check it using show create table
+# And try truncating it
+
+create external table simple_external_table ( col1 integer, col2 string ) location '/user/abhay/hive/data';
+
+#Output:-
+hive> create external table simple_external_table ( col1 integer, col2 string ) location '/user/abhay/hive/data';
+OK
+Time taken: 0.367 seconds
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+show create table simple_external_table;
+
+#Output:-
+hive> show create table simple_external_table;
+OK
+CREATE EXTERNAL TABLE `simple_external_table`(
+  `col1` int, 
+  `col2` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://127.0.0.1:9000/user/abhay/hive/data'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1641358010')
+Time taken: 0.182 seconds, Fetched: 13 row(s)
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+select * from simple_external_table;
+
+#Output:-
+hive> select * from simple_external_table;
+OK
+Time taken: 0.233 seconds
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+insert into simple_external_table values (1, 'abc');
+
+#Output:-
+hive> insert into simple_external_table values (1, 'abc');
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hitman_20220105101817_7ba2523b-bbd4-447a-b0ae-cbe92b60281f
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1641356048247_0003, Tracking URL = http://ubuntu:8088/proxy/application_1641356048247_0003/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641356048247_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2022-01-05 10:18:28,705 Stage-1 map = 0%,  reduce = 0%
+2022-01-05 10:18:37,175 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.35 sec
+MapReduce Total cumulative CPU time: 3 seconds 350 msec
+Ended Job = job_1641356048247_0003
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/abhay/hive/data/.hive-staging_hive_2022-01-05_10-18-17_893_5058719471514914321-1/-ext-10000
+Loading data to table cdac.simple_external_table
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 3.35 sec   HDFS Read: 4071 HDFS Write: 88 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 350 msec
+OK
+Time taken: 20.845 seconds
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+truncate table simple_external_table;
+
+#Output:-
+hive> truncate table simple_external_table;
+FAILED: SemanticException [Error 10146]: Cannot truncate non-managed table simple_external_table.
+hive> 
+
+
+--------------------------------------------------------------------------------------
+# Alter a table
+# Managed table
+
+alter table simple_managed_table rename to my_simple_managed_table;
+
+#Output:-
+hive> alter table simple_managed_table rename to my_simple_managed_table;
+OK
+Time taken: 0.44 seconds
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+alter table simple_external_table rename to my_simple_external_table;
+
+#Output:-
+hive> alter table simple_external_table rename to my_simple_external_table;
+OK
+Time taken: 0.249 seconds
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+describe formatted my_simple_managed_table ;
+
+#Output:-
+hive> describe formatted my_simple_managed_table ;
+OK
+# col_name              data_type               comment             
+                 
+col1                    int                                         
+col2                    string                                      
+                 
+# Detailed Table Information             
+Database:               cdac                     
+Owner:                  hitman                   
+CreateTime:             Wed Jan 05 10:04:26 IST 2022     
+LastAccessTime:         UNKNOWN                  
+Retention:              0                        
+Location:               hdfs://127.0.0.1:9000/user/hive/warehouse/cdac.db/my_simple_managed_table     
+Table Type:             MANAGED_TABLE            
+Table Parameters:                
+        COLUMN_STATS_ACCURATE   {\"BASIC_STATS\":\"true\"}
+        last_modified_by        hitman              
+        last_modified_time      1641358171          
+        numFiles                2                   
+        numRows                 4                   
+        rawDataSize             20                  
+        totalSize               24                  
+        transient_lastDdlTime   1641358171          
+                 
+# Storage Information            
+SerDe Library:          org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe       
+InputFormat:            org.apache.hadoop.mapred.TextInputFormat         
+OutputFormat:           org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat   
+Compressed:             No                       
+Num Buckets:            -1                       
+Bucket Columns:         []                       
+Sort Columns:           []                       
+Storage Desc Params:             
+        serialization.format    1                   
+Time taken: 0.252 seconds, Fetched: 33 row(s)
+hive> 
+
+
+
+--------------------------------------------------------------------------------------
+# Create a table with a changed file-format 
+
+create table parquet_managed_table ( col1 integer, col2 string ) stored as parquet;
+
+#Output:-
+hive> create table parquet_managed_table ( col1 integer, col2 string ) stored as parquet;
+OK
+Time taken: 0.191 seconds
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+show create table parquet_managed_table;
+
+#Output:-
+hive> show create table parquet_managed_table;
+OK
+CREATE TABLE `parquet_managed_table`(
+  `col1` int, 
+  `col2` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  'hdfs://127.0.0.1:9000/user/hive/warehouse/cdac.db/parquet_managed_table'
+TBLPROPERTIES (
+  'transient_lastDdlTime'='1641358345')
+Time taken: 0.491 seconds, Fetched: 13 row(s)
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+insert overwrite table parquet_managed_table select col1, col2 from my_simple_external_table ;
+
+#Output:-
+hive> insert overwrite table parquet_managed_table select col1, col2 from my_simple_external_table ;
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hitman_20220105102532_52cc87c4-2be9-4ba7-869b-5e80d6e00ee7
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1641356048247_0004, Tracking URL = http://ubuntu:8088/proxy/application_1641356048247_0004/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641356048247_0004
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2022-01-05 10:25:47,684 Stage-1 map = 0%,  reduce = 0%
+2022-01-05 10:25:55,363 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.83 sec
+MapReduce Total cumulative CPU time: 2 seconds 830 msec
+Ended Job = job_1641356048247_0004
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/cdac.db/parquet_managed_table/.hive-staging_hive_2022-01-05_10-25-32_945_8405428550057959831-1/-ext-10000
+Loading data to table cdac.parquet_managed_table
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 2.83 sec   HDFS Read: 4223 HDFS Write: 401 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 830 msec
+OK
+Time taken: 25.683 seconds
+hive>
+
+
+
+--------------------------------------------------------------------------------------
+# Check the binary file inserted into the managed_table, 
+# You will not be able to read the file since this is binary format
+
+dfs -ls /user/hive/warehouse/cdac.db/parquet_managed_table ;
+
+#Output:-
+hive> dfs -ls /user/hive/warehouse/cdac.db/parquet_managed_table ;
+Found 1 items
+-rwxrwxr-x   1 hitman supergroup        319 2022-01-05 10:25 /user/hive/warehouse/cdac.db/parquet_managed_table/000000_0
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dfs -cat /user/hive/warehouse/cdac.db/parquet_managed_table/000000_0 ;
+
+#Output:-
+hive> dfs -cat /user/hive/warehouse/cdac.db/parquet_managed_table/000000_0 ;
+PAR1▒▒▒▒▒abc▒abcabc<H
+                     hive_schema%▒col1
+                                      %▒col2%,▒col1VV<▒▒&^
+                                                          ▒col2XX&^<▒abc▒abc�(Iparquet-mr version 1.8.1 (build 4aba4dae7bb0d4edbcf7923ae1339f28fd3f7fcf)�PAR1hive> 
+
+
+
+--------------------------------------------------------------------------------------
+# Create a table with a changed row-format and parquet file format
+
+create table changed_row_format_parquet ( col1 integer, col2 string )
+row format delimited
+fields terminated by ','
+collection items terminated by ';'
+map keys terminated by ":"
+lines terminated by '\n'
+stored as parquet;
+
+#Output:-
+hive> create table changed_row_format_parquet ( col1 integer, col2 string )
+    > row format delimited
+    > fields terminated by ','
+    > collection items terminated by ';'
+    > map keys terminated by ":"
+    > lines terminated by '\n'
+    > stored as parquet;
+OK
+Time taken: 1.077 seconds
+hive> 
+
+
+--------------------------------------------------------------------------------------
+# Create a table with a changed row-format and text file format
+
+create table changed_row_format_text ( col1 integer, col2 string )
+row format delimited
+fields terminated by ','
+collection items terminated by ';'
+map keys terminated by ":"
+lines terminated by '\n';
+
+#Output:-
+hive> create table changed_row_format_text ( col1 integer, col2 string )
+    > row format delimited
+    > fields terminated by ','
+    > collection items terminated by ';'
+    > map keys terminated by ":"
+    > lines terminated by '\n';
+OK
+Time taken: 0.313 seconds
+hive> 
+
+
+
+--------------------------------------------------------------------------------------
+# Copy the shared file to /tmp and then run the following command on hive shell 
+
+dfs -put /tmp/Train_Dataset_cut.csv /user/hive/warehouse/cdac.db/changed_row_format_text/
+
+select * from changed_row_format_text ;
+
+#Output:-
+hive> dfs -put /tmp/Train_Dataset_cut.csv /user/hive/warehouse/cdac.db/changed_row_format_text/ ;
+hive> select * from changed_row_format_text ;
+OK
+1000    1000
+1001    1010
+1002    1015
+1003    1020
+1002    1015
+110     1000
+2000    1000
+2001    1010
+2002    1015
+2003    1020
+2002    1015
+2110    1000
+3000    1000
+3001    1010
+3002    1015
+3003    1020
+3002    1015
+3110    1000
+4000    1000
+4001    1010
+4002    1015
+4003    1020
+4002    1015
+4110    1000
+5000    1000
+5001    1010
+5002    1015
+5003    1020
+5002    1015
+5110    1000
+Time taken: 3.193 seconds, Fetched: 30 row(s)
+hive> 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+select max(col1) from changed_row_format_text ;
+
+#Output:-
+hive> select max(col1) from changed_row_format_text ;
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hitman_20220105234157_96ee96ff-44a5-4ab4-a876-1890d87e599f
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1641402629560_0001, Tracking URL = http://ubuntu:8088/proxy/application_1641402629560_0001/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641402629560_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2022-01-05 23:42:15,985 Stage-1 map = 0%,  reduce = 0%
+2022-01-05 23:42:22,483 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.53 sec
+2022-01-05 23:42:30,894 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 5.26 sec
+MapReduce Total cumulative CPU time: 5 seconds 260 msec
+Ended Job = job_1641402629560_0001
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 5.26 sec   HDFS Read: 8874 HDFS Write: 104 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 260 msec
+OK
+5110
+Time taken: 35.439 seconds, Fetched: 1 row(s)
+hive> 
+
+
+--------------------------------------------------------------------------------------
+// How the interpretation works in hive
+create external table train_data ( col1 string, col2 string, col3 string, col4 string )
+row format delimited
+fields terminated by '|'
+collection items terminated by ';'
+map keys terminated by ":"
+lines terminated by '\n';
+
+#Output:-
+hive> create external table train_data ( col1 string, col2 string, col3 string, col4 string )
+    > row format delimited
+    > fields terminated by '|'
+    > collection items terminated by ';'
+    > map keys terminated by ":"
+    > lines terminated by '\n';
+OK
+Time taken: 0.708 seconds
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+create external table train_data ( col1 int, col2 int, col3 int, col4 string )
+row format delimited
+fields terminated by '|'
+collection items terminated by ';'
+map keys terminated by ":"
+lines terminated by '\n';
+
+#Output:-
+hive> create external table train_data ( col1 int, col2 int, col3 int, col4 string )
+    > row format delimited
+    > fields terminated by '|'
+    > collection items terminated by ';'
+    > map keys terminated by ":"
+    > lines terminated by '\n';
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. AlreadyExistsException(message:Table train_data already exists)
+hive> 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+create external table train_data_complete ( train_no int, in_time int, out_time int, speed int, direction_in string, direction_out string , time_spent string  )
+row format delimited
+fields terminated by '|'
+collection items terminated by ';'
+map keys terminated by ":"
+lines terminated by '\n';
+
+#Output:-
+hive> create external table train_data_complete ( train_no int, in_time int, out_time int, speed int, direction_in string, direction_out string , time_spent string  )
+    > row format delimited
+    > fields terminated by '|'
+    > collection items terminated by ';'
+    > map keys terminated by ":"
+    > lines terminated by '\n';
+OK
+Time taken: 0.136 seconds
+hive> 
+
+
+
+-------------------------------------------------------------------------------------
+dfs -put /tmp/Train_Dataset.csv /user/hive/warehouse/cdac.db/train_data_complete/. ;
+
+// Paritioning example
+
+create table train_data_partitioned ( train_no int, in_time int, speed int ) 
+partitioned by ( direction string ) 
+row format delimited
+fields terminated by '|'
+collection items terminated by ';'
+map keys terminated by ":"
+lines terminated by '\n';
+
+#Output:-
+hive> dfs -put /tmp/Train_Dataset.csv /user/hive/warehouse/cdac.db/train_data_complete/. ;
+hive> create table train_data_partitioned ( train_no int, in_time int, speed int ) 
+    > partitioned by ( direction string ) 
+    > row format delimited
+    > fields terminated by '|'
+    > collection items terminated by ';'
+    > map keys terminated by ":"
+    > lines terminated by '\n';
+OK
+Time taken: 0.234 seconds
+hive> 
+
+
+--------------------------------------------------------------------------------------
+// Dynamic partitioning example 
+
+create external table train_data_complete ( train_no int, in_time int, out_time int, speed int, direction_in string, direction_out string , time_spent string  )
+    row format delimited
+    fields terminated by '|'
+    collection items terminated by ';'
+    map keys terminated by ":"
+    lines terminated by '\n';
+
+#Output:-
+hive> create external table train_data_complete ( train_no int, in_time int, out_time int, speed int, direction_in string, direction_out string , time_spent string  )
+    >     row format delimited
+    >     fields terminated by '|'
+    >     collection items terminated by ';'
+    >     map keys terminated by ":"
+    >     lines terminated by '\n';
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. AlreadyExistsException(message:Table train_data_complete already exists)
+hive> 
+
+
+-------------------------------------------------------------------------------------
+dfs -put /tmp/Train_Dataset.csv /user/hive/warehouse/cdac.db/train_data_complete/. ;
+
+select * from train_data_complete ;
+
+#Output:-
+hive> select * from train_data_complete ;
+OK
+1000    1000    1010    90      E       E       00:10
+1001    1010    1030    40      W       S       00:20
+1002    1015    1030    40      N       N       00:15
+1003    1020    1050    60      S       E       00:30
+1002    1015    1100    40      E       W       00:45
+110     1000    1001    70      W       N       00:01
+2000    1000    1010    60      E       E       00:10
+2001    1010    1030    40      W       S       00:20
+2002    1015    1030    40      N       N       00:15
+2003    1020    1050    60      S       E       00:30
+2002    1015    1100    40      E       W       00:45
+2110    1000    1001    70      W       N       00:01
+3000    1000    1010    60      E       E       00:10
+3001    1010    1030    40      W       S       00:20
+3002    1015    1030    40      N       N       00:15
+3003    1020    1050    60      S       E       00:30
+3002    1015    1100    40      E       W       00:45
+3110    1000    1001    70      W       N       00:01
+4000    1000    1010    60      E       E       00:10
+4001    1010    1030    40      W       S       00:20
+4002    1015    1030    40      N       N       00:15
+4003    1020    1050    60      S       E       00:30
+4002    1015    1100    40      E       W       00:45
+4110    1000    1001    10      W       N       00:01
+5000    1000    1010    60      E       E       00:10
+5001    1010    1030    40      W       S       00:20
+5002    1015    1030    40      N       N       00:15
+5003    1020    1050    60      S       E       00:30
+5002    1015    1100    40      E       W       00:45
+5110    1000    1001    70      W       N       00:01
+Time taken: 0.219 seconds, Fetched: 30 row(s)
+hive> 
+
+
+
+-------------------------------------------------------------------------------------
+set hive.exec.dynamic.partition.mode=nonstrict ; 
+
+#Output:-
+hive> set hive.exec.dynamic.partition.mode=nonstrict ; 
+hive> 
+
+-------------------------------------------------------------------------------------
+insert overwrite table train_data_partitioned partition(direction) select train_no, in_time, speed, direction_in from train_data_complete ;
+
+#Output:-
+hive> insert overwrite table train_data_partitioned partition(direction) select train_no, in_time, speed, direction_in from train_data_complete ;
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hitman_20220105235652_b1cf22a5-6a18-4f49-af23-ae93c28b8de9
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1641402629560_0002, Tracking URL = http://ubuntu:8088/proxy/application_1641402629560_0002/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641402629560_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2022-01-05 23:57:05,642 Stage-1 map = 0%,  reduce = 0%
+2022-01-05 23:57:11,991 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.08 sec
+MapReduce Total cumulative CPU time: 2 seconds 80 msec
+Ended Job = job_1641402629560_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/cdac.db/train_data_partitioned/.hive-staging_hive_2022-01-05_23-56-52_146_1581349056631775994-1/-ext-10000
+Loading data to table cdac.train_data_partitioned partition (direction=null)
+
+
+         Time taken to load dynamic partitions: 1.644 seconds
+         Time taken for adding to write entity : 0.001 seconds
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 2.08 sec   HDFS Read: 5791 HDFS Write: 660 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 80 msec
+OK
+Time taken: 24.501 seconds
+hive> 
+
+
+
+-------------------------------------------------------------------------------------
+dfs -ls /user/hive/warehouse/cdac.db/train_data_partitioned ;
+
+#Output:-
+hive> dfs -ls /user/hive/warehouse/cdac.db/train_data_partitioned ;
+Found 4 items
+drwxrwxr-x   - hitman supergroup          0 2022-01-05 23:57 /user/hive/warehouse/cdac.db/train_data_partitioned/direction=E
+drwxrwxr-x   - hitman supergroup          0 2022-01-05 23:57 /user/hive/warehouse/cdac.db/train_data_partitioned/direction=N
+drwxrwxr-x   - hitman supergroup          0 2022-01-05 23:57 /user/hive/warehouse/cdac.db/train_data_partitioned/direction=S
+drwxrwxr-x   - hitman supergroup          0 2022-01-05 23:57 /user/hive/warehouse/cdac.db/train_data_partitioned/direction=W
+hive> 
+
+
+
+-------------------------------------------------------------------------------------
+show partitions train_data_partitioned ;
+
+#Output:-
+hive> show partitions train_data_partitioned ;
+OK
+direction=E
+direction=N
+direction=S
+direction=W
+Time taken: 0.162 seconds, Fetched: 4 row(s)
+hive> 
+
+
+
+-------------------------------------------------------------------------------------
+=============================================
+
+# Join example
+create table sales (cust_name string, id int);
+create table things (id int, name string);
+
+set hive.cli.print.header=true;
+
+insert into sales values ('Abhay', 1), ('Aahaan', 12), ('Lavanya', 30), ('Avi', 41), ('Devika', 15), ('Unmesh', 0);
+select * from sales;
+
+#Output:-
+
+hive> create table sales (cust_name string, id int);
+OK
+Time taken: 0.268 seconds
+hive> create table things (id int, name string);
+OK
+Time taken: 0.196 seconds
+hive> set hive.cli.print.header=true;
+hive> insert into sales values ('Abhay', 1), ('Aahaan', 12), ('Lavanya', 30), ('Avi', 41), ('Devika', 15), ('Unmesh', 0);
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hitman_20220105235900_ef8b68f3-1066-4c8b-82a3-947a587a0196
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1641402629560_0003, Tracking URL = http://ubuntu:8088/proxy/application_1641402629560_0003/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641402629560_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2022-01-05 23:59:11,233 Stage-1 map = 0%,  reduce = 0%
+2022-01-05 23:59:18,707 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.02 sec
+MapReduce Total cumulative CPU time: 3 seconds 20 msec
+Ended Job = job_1641402629560_0003
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/cdac.db/sales/.hive-staging_hive_2022-01-05_23-59-00_892_6780253266979594212-1/-ext-10000
+Loading data to table cdac.sales
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 3.02 sec   HDFS Read: 4236 HDFS Write: 121 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 20 msec
+OK
+_col0   _col1
+Time taken: 19.8 seconds
+hive> select * from sales;
+OK
+sales.cust_name sales.id
+Abhay   1
+Aahaan  12
+Lavanya 30
+Avi     41
+Devika  15
+Unmesh  0
+Time taken: 0.247 seconds, Fetched: 6 row(s)
+hive> 
+
+
+
+-------------------------------------------------------------------------------------/
+insert into things values (1, 'HDD'), (12, 'XBox'), (30, 'Mobile'), (41, 'Shirt'), (15, 'Scarf'), (100, 'Shoes');
+select * from things;
+
+#Output:-
+hive> insert into things values (1, 'HDD'), (12, 'XBox'), (30, 'Mobile'), (41, 'Shirt'), (15, 'Scarf'), (100, 'Shoes');
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hitman_20220106000140_6bb8f0cc-0901-4c8b-9abb-b603d6d0a34a
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1641402629560_0004, Tracking URL = http://ubuntu:8088/proxy/application_1641402629560_0004/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641402629560_0004
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2022-01-06 00:01:50,612 Stage-1 map = 0%,  reduce = 0%
+2022-01-06 00:01:56,904 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.6 sec
+MapReduce Total cumulative CPU time: 2 seconds 600 msec
+Ended Job = job_1641402629560_0004
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/cdac.db/things/.hive-staging_hive_2022-01-06_00-01-40_732_6769747593065978308-1/-ext-10000
+Loading data to table cdac.things
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 2.6 sec   HDFS Read: 4235 HDFS Write: 119 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 600 msec
+OK
+_col0   _col1
+Time taken: 18.836 seconds
+hive> select * from things;
+OK
+things.id       things.name
+1       HDD
+12      XBox
+30      Mobile
+41      Shirt
+15      Scarf
+100     Shoes
+Time taken: 0.317 seconds, Fetched: 6 row(s)
+hive> 
+
+
+
+--------------------------------------------------------------------------------------
+# Inner join
+select sales.*, things.* from sales join things on (sales.id = things.id);
+
+#Output:-
+sales.cust_name sales.id        things.id       things.name
+Abhay   1       1       HDD
+Aahaan  12      12      XBox
+Lavanya 30      30      Mobile
+Avi     41      41      Shirt
+Devika  15      15      Scarf
+Time taken: 29.305 seconds, Fetched: 5 row(s)
+hive> 
+
+
+-------------------------------------------------------------------------------------
+# Left outer join
+select sales.*, things.* from sales left outer join things on (sales.id = things.id);
+
+#Output:-
+sales.cust_name sales.id        things.id       things.name
+Abhay   1       1       HDD
+Aahaan  12      12      XBox
+Lavanya 30      30      Mobile
+Avi     41      41      Shirt
+Devika  15      15      Scarf
+Unmesh  0       NULL    NULL
+Time taken: 29.047 seconds, Fetched: 6 row(s)
+hive> 
+
+
+-------------------------------------------------------------------------------------
+# Right outer join
+select sales.*, things.* from sales right outer join things on (sales.id = things.id);
+
+#Output:-
+sales.cust_name sales.id        things.id       things.name
+Abhay   1       1       HDD
+Aahaan  12      12      XBox
+Lavanya 30      30      Mobile
+Avi     41      41      Shirt
+Devika  15      15      Scarf
+NULL    NULL    100     Shoes
+Time taken: 26.59 seconds, Fetched: 6 row(s)
+hive> 
+
+
+-------------------------------------------------------------------------------------
+# Full outer join
+select sales.*, things.* from sales full outer join things on (sales.id = things.id);
+
+#Output:-
+sales.cust_name sales.id        things.id       things.name
+Unmesh  0       NULL    NULL
+Abhay   1       1       HDD
+Aahaan  12      12      XBox
+Devika  15      15      Scarf
+Lavanya 30      30      Mobile
+Avi     41      41      Shirt
+NULL    NULL    100     Shoes
+Time taken: 28.071 seconds, Fetched: 7 row(s)
+hive> 
+
+
+-------------------------------------------------------------------------------------
+# Create a view on join
+create view sales_view as select sales.cust_name, things.* from sales join things on (sales.id = things.id) ;
+
+#Output:-
+hive> create view sales_view as select sales.cust_name, things.* from sales join things on (sales.id = things.id) ;
+OK
+cust_name       id      name
+Time taken: 0.477 seconds
+hive> 
+
+-------------------------------------------------------------------------------------
+select * from sales_view;
+
+#Output:-
+sales_view.cust_name    sales_view.id   sales_view.name
+Abhay   1       HDD
+Aahaan  12      XBox
+Lavanya 30      Mobile
+Avi     41      Shirt
+Devika  15      Scarf
+Time taken: 28.927 seconds, Fetched: 5 row(s)
+hive> 
+
+
+-------------------------------------------------------------------------------------
+# truncate table
+truncate table sales;
+
+#Output:-
+hive> truncate table sales;
+OK
+Time taken: 0.168 seconds
+hive> 
+
+
+-------------------------------------------------------------------------------------
+# 
+==================================
+# UDFs
+
+create function myupper as 'org.cdac.hive.udf.MyUpper' USING JAR 'hdfs://localhost:9000/user/hive/UDFs/hive.udf-0.0.1-SNAPSHOT.jar';
+
+#Output:-
+Added [/tmp/58964f57-1d35-401c-9a3f-805100698333_resources/hive.udf-0.0.1-SNAPSHOT.jar] to class path
+Added resources: [hdfs://localhost:9000//user/hive/UDFs/hive.udf-0.0.1-SNAPSHOT.jar]
+OK
+Time taken: 0.049 seconds
+
+
+_________________________________________________________________________________
+select myupper(name) from things ;
+
+#Output:-
+OK
+HDD
+XBOX
+MOBILE
+SHIRT
+SCARF
+SHOES
+Time taken: 2.442 seconds, Fetched: 6 row(s)
+
+
+---------------------------------------------------------------------------------
+#UDAF
+create function mymax as 'org.cdac.hive.udaf.MyMax' USING JAR 'hdfs://localhost:9000/user/hive/UDFs/hive.udf-0.0.1-SNAPSHOT.jar';
+
+#Output:-
+Added [/tmp/58964f57-1d35-401c-9a3f-805100698333_resources/hive.udf-0.0.1-SNAPSHOT.jar] to class path
+Added resources: [hdfs://localhost:9000//user/hive/UDFs/hive.udf-0.0.1-SNAPSHOT.jar]
+OK
+Time taken: 0.049 seconds
+
+
+_________________________________________________________________________________
+select mymax(id) from things ;
+#Output:-
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = mayur_20220104235743_035b5754-001e-4f00-9f85-053f15ab5b63
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1641317510245_0001, Tracking URL = http://ubuntu:8088/proxy/application_1641317510245_0001/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641317510245_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2022-01-04 23:58:00,893 Stage-1 map = 0%,  reduce = 0%
+2022-01-04 23:58:09,445 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.97 sec
+2022-01-04 23:58:17,969 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 7.1 sec
+MapReduce Total cumulative CPU time: 7 seconds 100 msec
+Ended Job = job_1641317510245_0001
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 7.1 sec   HDFS Read: 7925 HDFS Write: 103 SUCCESS
+Total MapReduce CPU Time Spent: 7 seconds 100 msec
+OK
+100
+Time taken: 36.79 seconds, Fetched: 1 row(s)
+
+
+---------------------------------------------------------------------------------
+
+=================================
+How to create a custom mapper 
+
+Below is the content of describe_sale.py. Add it to some file on local system
+-------- START -----------
+
+import sys 
+
+for line in sys.stdin: 
+    (customer_name,item_id) = line.split('\t') 
+
+    # print function in python2 will introduce newline 
+    sys.stdout.write(customer_name+' bought item : '+item_id)
+
+--------- END ----------
+
+add file /home/abhay/Desktop/01_DBDA/describe_sale.py
+
+#Output:-
+Added resources: [/home/hitman/Assignment/describe_sales.py]
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+select transform(cust_name, id) using 'python describe_sale.py' as (sales_desc) from sales;
+
+#Output:-
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = mayur_20220104235743_035b5754-001e-4f00-9f85-053f15ab5b63
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1641317510245_0001, Tracking URL = http://ubuntu:8088/proxy/application_1641317510245_0001/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641317510245_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2022-01-04 23:58:00,893 Stage-1 map = 0%,  reduce = 0%
+2022-01-04 23:58:09,445 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.97 sec
+2022-01-04 23:58:17,969 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 7.1 sec
+MapReduce Total cumulative CPU time: 7 seconds 100 msec
+Ended Job = job_1641317510245_0001
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 7.1 sec   HDFS Read: 7925 HDFS Write: 103 SUCCESS
+Total MapReduce CPU Time Spent: 7 seconds 100 msec
+OK
+100
+Time taken: 36.79 seconds, Fetched: 1 row(s)
+hive> add file /home/hitman/Assignment/describe_sale.py;
+/home/hitman/Assignment/describe_sale.py does not exist
+Query returned non-zero code: 1, cause: /home/hitman/Assignment/describe_sale.py does not exist
+hive> add file /home/hitman/Assignment/describe_sales.py;
+Added resources: [/home/hitman/Assignment/describe_sales.py]
+hive> select transform(cust_name, id) using 'python describe_sale.py' as (sales_desc) from sales;
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = mayur_20220105000526_984718db-7b7a-42e4-aceb-be07c2e0e650
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1641317510245_0002, Tracking URL = http://ubuntu:8088/proxy/application_1641317510245_0002/
+Kill Command = /home/hitman/DBDA_HOME/hadoop-3.3.1/bin/hadoop job  -kill job_1641317510245_0002
+Hadoop job information for Stage-1: number of mappers: 0; number of reducers: 0
+2022-01-05 00:05:39,640 Stage-1 map = 0%,  reduce = 0%
+Ended Job = job_1641317510245_0002
+MapReduce Jobs Launched: 
+Stage-Stage-1:  HDFS Read: 0 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 0 msec
+OK
+Time taken: 15.0 seconds
+
+
+
+---------------------------------------------------------------------------------
+================================
+
+Map side join
+
+===================
+Set it using 2 ways:
+-------------------
+
+set hive.auto.convert.join = true ;
+set hive.mapjoin.smalltable.filesize=25000000 ; 
+set hive.auto.convert.join.noconditionaltask = true ;
+set hive.auto.convert.join.noconditionaltask.size=10000000 ;
+
+------------------
+Way 2 
+------------------
+
+SELECT /*+ MAPJOIN(table_2) */ 
+	table_1.first_name, table_1.eid,table_2.eid 
+	FROM 
+		table_1 JOIN table_2 ON table_1.first_name = table_2.first_name;
+
+
+
+
+
+
+
+
+
+
+
+

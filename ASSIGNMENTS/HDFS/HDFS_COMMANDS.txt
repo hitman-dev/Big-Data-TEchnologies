@@ -1,0 +1,815 @@
+#!/bin/bash
+
+####################################
+#Assignment-1
+####################################
+# Please execute all the commands below in the sequence given below. 
+# Write a one liner on your understanding on what the command functionality is.
+# Write in the same script as a comment.
+# Submit your assignment in the Assignment folder for Day02
+# Submission file naming format : PRNXXXX_eDBDA_Assignment01.sh
+###################################
+
+
+# Push a file into HDFS
+cd $HADOOP_HOME
+-------------------------------------------------------------------------------------
+bin/hdfs dfs -copyFromLocal README.txt /
+
+#copyFromLocal
+#Copies file from local to hadoop, same function as -put command
+
+#Output:-
+hitman@ubuntu:~$ cd $HADOOP_HOME
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -copyFromLocal README.txt /
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ ls
+bin  include  libexec         licenses-binary  logs           NOTICE.txt  sbin
+etc  lib      LICENSE-binary  LICENSE.txt      NOTICE-binary  README.txt  share
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+
+-------------------------------------------------------------------------------------
+bin/hdfs dfs -copyFromLocal README.txt /README_usingCopy.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 6 items
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:07 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+-------------------------------------------------------------------------------------
+#put
+
+bin/hdfs dfs -put README.txt /README_put.txt
+
+#Copies fle from local to hadoop
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 7 items
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:07 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:20 /README_put.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+-------------------------------------------------------------------------------------
+#appendToFile
+
+bin/hdfs dfs -put README.txt /README_FileToBeAppended.txt
+
+#Creates a file and copies content of specified file into it
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -put README.txt /README_FileToBeAppended.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 8 items
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:07 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:24 /README_FileToBeAppended.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:20 /README_put.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -cat /README.txt
+For the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -cat /README_FileToBeAppended.txt
+For the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bin/hdfs dfs -appendToFile README.txt /README_FileToBeAppended.txt
+
+#This command appends content of a file to specified file
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -appendToFile README.txt /README_FileToBeAppended.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -cat /README_FileToBeAppended.txtFor the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+For the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bin/hdfs dfs -cat /README_FileToBeAppended.txt
+
+#This command reads the file
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -cat /README_FileToBeAppended.txtFor the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+For the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+# Copy a file to local
+#copyToLocal
+#same as get
+
+bin/hdfs dfs -copyToLocal /README.txt /tmp/.
+cat /tmp/README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -copyToLocal /README.txt /tmp/.
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 8 items
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:07 /README.txt
+-rw-r--r--   1 hitman supergroup        350 2022-01-04 15:36 /README_FileToBeAppended.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:20 /README_put.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ cat /tmp/README.txt
+For the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#get
+
+bin/hdfs dfs -get /README_put.txt /tmp
+cat /tmp/README_put.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -get /README_put.txt /tmp
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ cat /tmp/README_put.txt
+For the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+
+   
+---------------------------------------------------------------------------------------
+# Move a file to local
+
+#moveToLocal
+#moves the file or directory from the Hadoop filesystem to the destination in the local #filesystem.
+
+bin/hdfs dfs -moveToLocal /README_FileToBeAppended.txt /tmp
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -moveToLocal /README_FileToBeAppended.txt /tmp
+moveToLocal: Option '-moveToLocal' is not implemented yet.
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+----------------------------------------------------------------------------------------
+#moveFromLocal
+#moveFromLocal moves the file or directory from the local filesystem to the destination in #Hadoop HDFS.
+
+cp README.txt README_mv.txt
+bin/hdfs dfs -moveFromLocal README_mv.txt /
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ cp README.txt README_mv.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -moveFromLocal README_mv.txt /
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 9 items
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:07 /README.txt
+-rw-r--r--   1 hitman supergroup        350 2022-01-04 15:36 /README_FileToBeAppended.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:33 /README_mv.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:20 /README_put.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Copy a file within HDFS
+
+#cp
+# Create a copy of file within HDFS
+
+bin/hdfs dfs -cp /README.txt /README.txt.copied
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -cp /README.txt /README.txt.copied
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 10 items
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:07 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:44 /README.txt.copied
+-rw-r--r--   1 hitman supergroup        350 2022-01-04 15:36 /README_FileToBeAppended.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:33 /README_mv.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:20 /README_put.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+
+-----------------------------------------------------------------------------------------
+# Move a file withing HDFS
+
+#mv
+#Move a file with HDFS
+
+bin/hdfs dfs -mv /README.txt.copied /README.txt.moved
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -mv /README.txt.copied /README.txt.moved
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 10 items
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:07 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:44 /README.txt.moved
+-rw-r--r--   1 hitman supergroup        350 2022-01-04 15:36 /README_FileToBeAppended.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:33 /README_mv.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:20 /README_put.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+
+----------------------------------------------------------------------------------------
+# Create a file 
+
+#touch
+#Create a file with HDFS
+
+bin/hdfs dfs -touch /touched.file
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -touch /touched.file
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 11 items
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:07 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:44 /README.txt.moved
+-rw-r--r--   1 hitman supergroup        350 2022-01-04 15:36 /README_FileToBeAppended.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:33 /README_mv.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:20 /README_put.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:47 /touched.file
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#touchz
+#creates a file in HDFS with file size equals to 0 byte
+#touch and touchz both do the same except touchz is setting to a file timestamp of the folder 
+#where is created. From the source code of touchz:
+#Creates a file of zero length at path with current time as the timestamp of that path. 
+#An error is returned if the file exists with non-zero length
+
+bin/hdfs dfs -touchz /touched.file.z
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -touchz /touched.file.z
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 12 items
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:07 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:44 /README.txt.moved
+-rw-r--r--   1 hitman supergroup        350 2022-01-04 15:36 /README_FileToBeAppended.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:33 /README_mv.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:20 /README_put.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:47 /touched.file
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:51 /touched.file.z
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+--------------------------------------------------------------------------------------
+# Access a file 
+
+#cat
+#opens a file in terminal
+
+bin/hdfs dfs -cat /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -cat /README.txt
+For the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+
+   
+---------------------------------------------------------------------------------------   
+#tail
+#Display last 1KB/last 5 lines of a file on console or stdout.
+
+bin/hdfs dfs -tail /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -tail /README.txt
+For the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#head
+#Display first 5 lines of a file on console or stdout.
+
+bin/hdfs dfs -head /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -head /README.txt
+For the latest information about Hadoop, please visit our website at:
+
+   http://hadoop.apache.org/
+
+and our wiki, at:
+
+   https://cwiki.apache.org/confluence/display/HADOOP/
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+--------------------------------------------------------------------------------------
+# Truncate a file 
+
+#truncate
+#The TRUNCATE command removes all rows from the table as well as from the partition, but #keeps the table structure as it is. Truncating a table in Hive is indirectly removing the #files from the HDFS as a table in Hive is just a way of reading the data from the HDFS in #the table or structural format.
+
+bin/hdfs dfs -put LICENSE.txt /
+bin/hdfs dfs -truncate /LICENSE.txt
+bin/hdfs dfs -cat /LICENSE.txt
+
+#Qutput:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -put LICENSE.txt /
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -truncate /LICENSE.txt
+-truncate: Not enough arguments: expected 2 but got 1
+
+-----------------------------------------------------------------------------------------
+#concat
+#this function will concat the input strings. You can specify any number of strings #separated by comma.
+
+bin/hdfs dfs -concat /README.txt /README_mv.txt /README_put.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -concat /README.txt /README_mv.txt /README_put.txt
+concat: hdfs://127.0.0.1:9000/README_mv.txt does not exist or is not file.
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Find a file 
+#Find all the relavent files
+#find
+bin/hdfs dfs -find / -name \*.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -find / -name \*.txt
+/LICENSE.txt
+/README.txt
+/README_FileToBeAppended.txt
+/README_usingCopy.txt
+/test1/marvel.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+----------------------------------------------------------------------------------------
+# Count Files
+#count
+#This command count counts the number of files, directories, and bytes under the paths that #matches the specified file pattern.
+
+bin/hdfs dfs -count /
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -count /
+          70           42            1109623 /
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# File metadata operations
+
+#checksum
+#A checksum is a value used to verify the integrity of a file or a data transfer. In other #words, it is a sum that checks the validity of data. Checksums are typically used to #compare two sets of data to make sure they are the same.
+
+bin/hdfs dfs -checksum /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -checksum /README.txt
+/README.txt     MD5-of-1MD5-of-512CRC32C        000002000000000000000001fd0f23ec88b9c57aececbaf5a9141af9
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+----------------------------------------------------------------------------------------
+#chgrp
+#Change group association of files. The user must be the owner of files, or else a super-#user.
+
+bin/hdfs dfs -chgrp hdfs /README.txt
+bin/hdfs dfs -ls /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -chgrp hdfs /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -ls /README.txt
+-rw-r--r--   1 hitman hdfs        525 2022-01-04 17:08 /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#chmod
+#Change the permissions of files. With -R, make the change recursively through the #directory structure
+
+bin/hdfs dfs -chmod 777 /README.txt
+bin/hdfs dfs -ls /README.txt
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -chmod 777 /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -ls /README.txt
+-rwxrwxrwx   1 hitman hdfs        525 2022-01-04 17:08 /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+#chown
+#Change the owner of files.
+
+bin/hdfs dfs -chown hdfs:hdfs /README.txt
+bin/hdfs dfs -ls /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -chown hdfs:hdfs /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -ls /README.txt
+-rwxrwxrwx   1 hdfs hdfs        525 2022-01-04 17:08 /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+#df
+bin/hdfs dfs -df /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -df /README.txt
+Filesystem                    Size     Used    Available  Use%
+hdfs://127.0.0.1:9000  29428322304  1433600  15827345408    0%
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ ^C
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+#du
+#Displays sizes of files and directories contained in the given directory or the length of a #file in case its just a file.
+
+bin/hdfs dfs -du /
+
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -du /
+15217   15217   /LICENSE.txt
+525     525     /README.txt
+175     175     /README.txt.moved
+350     350     /README_FileToBeAppended.txt
+175     175     /README_usingCopy.txt
+123500  123500  /hbase
+624     624     /test1
+969029  969029  /tmp
+0       0       /touched.file
+0       0       /touched.file.z
+28      28      /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+
+---------------------------------------------------------------------------------------
+#dus
+#Displays a summary of file lengths. This is an alternate form of hdfs dfs -du -s.
+
+bin/hdfs dfs -du -s /
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -du -s /
+1109623  1109623  /
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+#setfacl
+#Sets Access Control Lists (ACLs) of files and directories.
+
+bin/hdfs dfs -setfacl -m user:dbda:rw- /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -setfacl -m user:dbda:rw- /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -ls /README.txt
+-rwxrwxrwx+  1 hdfs hdfs        525 2022-01-04 17:08 /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+
+---------------------------------------------------------------------------------------
+#getfacl
+#Displays the Access Control Lists (ACLs) of files and directories. If a directory has a #default ACL, then getfacl also displays the default ACL.
+
+bin/hdfs dfs -getfacl /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -getfacl /README.txt
+
+# file: /README.txt
+# owner: hdfs
+# group: hdfs
+user::rwx
+user:dbda:rw-
+group::rwx
+mask::rwx
+other::rwx
+
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+#setfattr
+#sets an extended attribute name and value for a file or directory
+
+bin/hdfs dfs -setfattr -n user.attrib1 -v dbda /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -setfattr -n user.attrib1 -v dbda /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 11 items
+-rw-r--r--   1 hitman supergroup      15217 2022-01-04 17:04 /LICENSE.txt
+-rwxrwxrwx+  1 hdfs   hdfs              525 2022-01-04 17:08 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:44 /README.txt.moved
+-rw-r--r--   1 hitman supergroup        350 2022-01-04 15:36 /README_FileToBeAppended.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:47 /touched.file
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:51 /touched.file.z
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+#getfattr
+#Displays the extended attribute names and values (if any) for a file or directory.
+
+bin/hdfs dfs -getfattr -d /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -getfattr -d /README.txt
+# file: /README.txt
+user.attrib1="dbda"
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+#setrep
+#Changes the replication factor of a file. If path is a directory then the command recursively #changes the replication factor of all files under the directory tree rooted at path.
+
+bin/hdfs dfs -setrep 1 /README.txt
+
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -setrep 1 /README.txt
+Replication 1 set: /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+#ls
+#For a file returns stat on the file with the following format:
+
+bin/hdfs dfs -ls /
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -ls /
+Found 11 items
+-rw-r--r--   1 hitman supergroup      15217 2022-01-04 17:04 /LICENSE.txt
+-rwxrwxrwx+  1 hdfs   hdfs              525 2022-01-04 17:08 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:44 /README.txt.moved
+-rw-r--r--   1 hitman supergroup        350 2022-01-04 15:36 /README_FileToBeAppended.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 15:17 /README_usingCopy.txt
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:47 /touched.file
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:51 /touched.file.z
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+
+---------------------------------------------------------------------------------------
+#lsr
+#Recursive version of ls. Similar to Unix ls -R.
+
+bin/hdfs dfs -lsr /
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -lsr /
+lsr: DEPRECATED: Please use 'ls -R' instead.
+
+
+---------------------------------------------------------------------------------------
+#stat
+#Returns the stat information on the path.
+
+bin/hdfs dfs -stat /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -stat /README.txt
+
+2022-01-04 11:38:02
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+#test
+#Takes a source file and outputs the file in text format. The allowed formats are zip and #TextRecordInputStream.
+
+bin/hdfs dfs -test -e /README.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -test -e /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+
+---------------------------------------------------------------------------------------
+# Delete a file 
+
+#rm
+#Delete files specified as args. Only deletes non empty directory and files
+
+bin/hdfs dfs -rm /README_usingCopy.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -rm /README_usingCopy.txt
+Deleted /README_usingCopy.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#rmr
+#Recursive version of delete. If the -skipTrash option is specified, the trash, if enabled, #will be bypassed and the specified file(s) deleted immediately
+
+bin/hdfs dfs -rmr /README_FileToBeAppended.txt
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -rmr /README_FileToBeAppended.txt
+rmr: DEPRECATED: Please use '-rm -r' instead.
+Deleted /README_FileToBeAppended.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ ^C
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$
+
+bin/hdfs dfs -rm -r /README_FileToBeAppended.txt
+
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -rm -r /README_FileToBeAppended.txt
+rm: `/README_FileToBeAppended.txt': No such file or directory
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+---------------------------------------------------------------------------------------
+# Directory operations
+
+#mkdir
+#Creates new directory
+bin/hdfs dfs -mkdir /newDir
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -mkdir /newDir
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 10 items
+-rw-r--r--   1 hitman supergroup      15217 2022-01-04 17:04 /LICENSE.txt
+-rwxrwxrwx+  1 hdfs   hdfs              525 2022-01-04 17:08 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:44 /README.txt.moved
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 17:50 /newDir
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:47 /touched.file
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:51 /touched.file.z
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#rmdir
+#Removes the specified directory
+bin/hdfs dfs -rmdir /newDir
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ bin/hdfs dfs -rmdir /newDir
+
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 9 items
+-rw-r--r--   1 hitman supergroup      15217 2022-01-04 17:04 /LICENSE.txt
+-rwxrwxrwx+  1 hdfs   hdfs              525 2022-01-04 17:08 /README.txt
+-rw-r--r--   1 hitman supergroup        175 2022-01-04 16:44 /README.txt.moved
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:47 /touched.file
+-rw-r--r--   1 hitman supergroup          0 2022-01-04 16:51 /touched.file.z
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+
+---------------------------------------------------------------------------------------
+# Cleanup
+#Recersively cleanup
+hdfs dfs -rm -r -f -skipTrash /touched.file
+hdfs dfs -rm -r -f -skipTrash /touched.file.z
+hdfs dfs -rm -r -f -skipTrash /LICENSE.txt
+hdfs dfs -rm -r -f -skipTrash /README.txt
+hdfs dfs -rm -r -f -skipTrash /README.txt.moved
+
+#Output:-
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -rm -r -f -skipTrash /touched.file
+Deleted /touched.file
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -rm -r -f -skipTrash /touched.file.z
+Deleted /touched.file.z
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -rm -r -f -skipTrash /LICENSE.txt
+Deleted /LICENSE.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -rm -r -f -skipTrash /README.txt
+Deleted /README.txt
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -rm -r -f -skipTrash /README.txt.moved
+Deleted /README.txt.moved
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ hdfs dfs -ls /
+Found 4 items
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 09:30 /hbase
+drwxr-xr-x   - hitman supergroup          0 2022-01-04 13:07 /test1
+drwxrwxr-x   - hitman supergroup          0 2021-12-29 21:14 /tmp
+drwxr-xr-x   - hitman supergroup          0 2021-12-28 23:17 /user
+hitman@ubuntu:~/DBDA_HOME/hadoop-3.3.1$ 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
